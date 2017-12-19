@@ -10,7 +10,6 @@ Vue.config.productionTip = false
 
 //oauth2(init);
 init();
-
 function init() {
   /* eslint-disable no-new */
   new Vue({
