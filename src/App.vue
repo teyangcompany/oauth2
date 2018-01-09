@@ -47,6 +47,7 @@
           } else {
             query.openid = openid;
           }
+          this.clearCookies();
           location.replace(makeUrl({protocol, hostname, port, path, query, hash}));
         }
         else if (type && type == "clear") {
@@ -54,7 +55,7 @@
           this.cookies = this.$cookies.keys();
         }
         else {
-          location.replace(`http://${(p.query.plat && p.query.plat === 'pro') ? "" : "test-"}wechat-repeater.hztywl.cn/wechat/plat/oauth/${p.query.appid}?url=${encodeURIComponent(location.href)}`);
+          location.replace(`http://${(p.query.plat && p.query.plat === 'pro') ? "" : "test-"}wechat-repeater.hztywl.cn/wechat/plat/oauth/${p.query.appid}?url=${encodeURIComponent(location.href)}&scope=snsapi_userinfo`);
         }
       },
       goBack() {
@@ -77,7 +78,6 @@
         })
       }
     },
-
     watch: {}
   }
 </script>
