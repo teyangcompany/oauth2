@@ -84,7 +84,7 @@ export function makeUrl(options) {
   if (options.hostname) {
     url += options.hostname
   }
-  if (options.port && options.port != 80) {
+  if (options.port && options.port != 80 && options.port != 443) {
     url += ":" + options.port
   }
   if (options.path) {
@@ -94,7 +94,7 @@ export function makeUrl(options) {
     let q = "";
     for (let key in options.query) {
       if (options.query[key]) {
-        q += `&${key}=${options.query[key]}`
+        q += `&${key}=${encodeURIComponent(options.query[key])}`
       } else {
         q += `&${key}`
       }

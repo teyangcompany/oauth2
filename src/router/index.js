@@ -10,6 +10,10 @@ const router = new Router({
     {
       path: '/',
       component: () => import("../pages/index.vue")
+    },
+    {
+      path: '/cookies',
+      component: () => import("../pages/cookies.vue")
     }
   ]
 

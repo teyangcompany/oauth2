@@ -1,5 +1,6 @@
 var path = require('path')
 var fs = require('fs')
+var webpack=require('webpack')
 var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
@@ -69,6 +70,9 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.ProvidePlugin({
+      Log: 'lmw-console-log'
+    }),
     new HtmlWebpackIncludeAssetsPlugin({
       assets: [
         "static/lib/md5-min.js",
