@@ -123,3 +123,19 @@ export function getParamsFromUrl(from) {
   let hash = url("hash", from);
   return {protocol, hostname, port, path, query, hash}
 }
+
+/**
+ * 生成query字符串
+ * @param query
+ * @returns {string}
+ */
+export function queryBuilder (query) {
+  if (typeof query !== 'object') {
+    return ''
+  }
+  let queryStr = ''
+  for (let key in query) {
+    queryStr += `&${key}=${encodeURIComponent(query[key])}`
+  }
+  return queryStr.substr(1)
+}

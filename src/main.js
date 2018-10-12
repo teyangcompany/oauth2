@@ -4,12 +4,23 @@ import Vue from 'vue'
 import App from './App'
 import VueCookies from "vue-cookies"
 
+
+import * as Sentry from '@sentry/browser'
+
+Sentry.init({
+  dsn: 'https://4e1d487fd4744afd932c4347edb3cfd6@sentry.io/1299841',
+  integrations: [new Sentry.Integrations.Vue({ Vue })]
+})
+
+
 Vue.use(VueCookies);
+
 
 Vue.config.productionTip = false
 
 //oauth2(init);
 init();
+
 function init() {
   /* eslint-disable no-new */
   new Vue({
