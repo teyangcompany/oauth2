@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <div v-if="type=='clear'">
-      <div style="font-size: 12px">
-        {{cookies}}
-      </div>
-      <div @click="clearCookies">清除</div>
+    <div v-if="query.debug&&query.debug==1">
+      <h3 @click="goOauth2(hrefParams)">去授权</h3>
+      <h3 @click="goBack(hrefParams,true)">返回</h3>
+      <pre style="font-size: 14px">{{query}}</pre>
+      <pre style="font-size: 14px">{{hrefParams}}</pre>
+      <pre style="font-size: 14px">{{cookie}}</pre>
     </div>
   </div>
 </template>
 
 <script>
-  import {fromCache, userCache} from "./lib/cache"
   import {getParamsFromUrl, isBrower, makeUrl} from "./lib/util"
 
   export default {
@@ -18,14 +18,22 @@
     data() {
       return {
         page: "",
-        type: '',
-        cookies: ""
+        hrefParams: {},
+        query: {},
+        cookies: "",
+        cookie: ''
       }
     },
     created() {
       Log('浏览器信息', window.navigator.userAgent);
       //微信打开
-      if (isBrower("micromessenger")) {
+      const hrefParams = getParamsFromUrl(location.href);
+      this.hrefParams = hrefParams;
+      this.query = hrefParams.query;
+      this.cookie = document.cookie;
+      if (hrefParams.query.debug) {
+
+      } else if (isBrower("micromessenger")) {
         this.weixinInit();
       } else {
         //非微信打开
@@ -38,7 +46,6 @@
           alert("get参数不能为空");
           return
         }
-        let {type} = p.query;
         let openid = this.$cookies.get(`openid_${p.query.appid}`);
         if (openid) {
           console.log('cb', p.query.callback);
@@ -49,28 +56,34 @@
           } else {
             query.openid = openid;
           }
+          query.t = new Date().getTime();
           this.clearCookies();
           let red = makeUrl({protocol, hostname, port, path, query, hash});
           console.log('重定向地址', red);
-          location.replace(red);
-        }
-        else if (type && type == "clear") {
-          this.type = type;
-          this.cookies = document.cookie;
+          location.href = red;
         }
         else {
-          location.replace(`http://${(p.query.plat && p.query.plat === 'pro') ? "" : "test-"}wechat-repeater.hztywl.cn/wechat/plat/oauth/${p.query.appid}?url=${encodeURIComponent(location.href)}&scope=snsapi_userinfo`);
+          this.goOauth2(p);
         }
       },
-      goBack() {
-        let user = userCache.get();
-        let from = fromCache.get();
-        let {protocol, hostname, port, path, query, hash} = getParamsFromUrl(from);
-        if (typeof query == "undefined") {
-          query = {};
+      goOauth2(p) {
+        location.replace(`http://${(p.query.plat && p.query.plat === 'pro') ? "" : "test-"}wechat-repeater.hztywl.cn/wechat/plat/oauth/${p.query.appid}?url=${encodeURIComponent(location.href)}&scope=snsapi_userinfo`);
+      },
+      goBack(p, showRed = false) {
+        let openid = this.$cookies.get(`openid_${p.query.appid}`);
+        let {protocol, hostname, port, path, query, hash} = getParamsFromUrl((p.query.callback));
+        //console.log('query', query);
+        if (!query) {
+          query = {openid: openid}
+        } else {
+          query.openid = openid;
         }
-        query.openid = user.id;
-        let retUrl = makeUrl({protocol, hostname, port, path, query, hash});
+        query.t = new Date().getTime();
+        this.clearCookies();
+        let red = makeUrl({protocol, hostname, port, path, query, hash});
+        console.log('重定向地址', red);
+        if (showRed) alert(red);
+        location.href = red;
       },
       clearCookies() {
         this.$cookies.keys().forEach((res) => {
