@@ -15,6 +15,14 @@ export default {
     "pat-test.gjwlyy.com": "wx3d274480f31f6de2",
     "www.gjwlyy.com": "wx3d274480f31f6de2"
   },
+  alipay_appid:{
+    "nethos-webtest.diandianys.com": "2016021701147425",
+    "www.gjwlyy.com": "2014102300014454"
+  },
+  alipay_oauth2: {
+    "nethos-webtest.diandianys.com": "http://nethosapi.diandianys.com",
+    "www.gjwlyy.com": "https://api.gjwlyy.com"
+  },
   base_params: {
     channel: "4",
     format: "JSON",
