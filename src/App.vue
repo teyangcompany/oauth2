@@ -42,7 +42,7 @@
         this.brower = 'alipay';
         this.alipayInit();
       } else {
-        //非微信打开
+        //非微信支付宝打开
       }
     },
     methods: {
