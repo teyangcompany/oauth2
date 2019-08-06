@@ -1,0 +1,3 @@
+cnpm i
+pause
+exit

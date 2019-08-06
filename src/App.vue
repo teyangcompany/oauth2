@@ -1,6 +1,6 @@
 <template>
   <div id="app" style="font-size: 1em">
-    <div v-if="query.debug&&query.debug==1">
+    <div v-if="query&&query.debug">
       <h3 @click="goOauth2(hrefParams)">去授权</h3>
       <h3 @click="goBack(hrefParams,true)">返回</h3>
       <pre style="font-size: 14px">{{query}}</pre>
@@ -31,11 +31,13 @@
       //微信打开
       const hrefParams = getParamsFromUrl(location.href);
       this.hrefParams = hrefParams;
-      this.query = hrefParams.query;
+      this.query = hrefParams.query || {};
       this.cookie = document.cookie;
-      if (hrefParams.query.debug) {
+      if (this.query.debug) {
+        eruda.init();
+      }
 
-      } else if (isBrower("micromessenger")) {
+      if (isBrower("micromessenger")) {
         this.brower = 'weixin';
         this.weixinInit();
       } else if (isBrower('alipayclient')) {
