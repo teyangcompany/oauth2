@@ -92,7 +92,7 @@
             query.openid = openid;
           }
           query.t = new Date().getTime();
-          this.clearCookies();
+          //this.clearCookies();
           let red = makeUrl({protocol, hostname, port, path, query, hash});
           console.log('重定向地址', red);
           location.href = red;
@@ -100,6 +100,8 @@
           this.goOauth2(p);
         }
       },
+
+      //http://test-wechat-repeater.hztywl.cn/wechat/plat/oauth/wxa49f90b4ff678ef2?url=https%3a%2f%2fwww.baidu.com&scope=snsapi_userinfo
       goOauth2(p) {
         const {hostname} = location;
         const APPID = config.alipay_appid[location.hostname];
