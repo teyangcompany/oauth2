@@ -81,7 +81,8 @@
           alert("get参数不能为空");
           return
         }
-        let openid = this.$cookies.get(`openid_${p.query.appid}`);
+        let openid = this.$cookies.get(`openid_${p.query.appid}`)||'';
+        if(!openid) openid=p.query.openid;
         if (openid) {
           console.log('cb', p.query.callback);
           let {protocol, hostname, port, path, query, hash} = getParamsFromUrl((p.query.callback));
